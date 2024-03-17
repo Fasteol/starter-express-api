@@ -7,7 +7,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://dev-blogs-fasteol.netlify.app/",
+    origin: "https://dev-blogs-fasteol.netlify.app",
     methods: ["GET", "DELETE", "POST", "PUT"],
   })
 );
