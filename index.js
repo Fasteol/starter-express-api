@@ -1,12 +1,25 @@
 const express = require("express");
+const cors = require("cors");
 const fs = require("fs/promises");
 const port = 8000;
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["GET", "DELETE", "POST", "PUT"],
+  })
+);
 app.use(express.json());
 
 const filePath = "./data/db.json";
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, DELETE");
+  next();
+});
 
 // Endpoint untuk mendapatkan semua data blog
 app.get("/blogs", async (req, res) => {
@@ -53,36 +66,6 @@ app.put("/blogs/:id", async (req, res) => {
     } else {
       res.status(404).json({ error: "Blog not found" });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// Endpoint untuk menambahkan blog baru
-app.post("/blogs", async (req, res) => {
-  try {
-    const data = await fs.readFile(filePath);
-    let jsonData = JSON.parse(data);
-
-    // Mendapatkan data blog baru dari body request
-    const newBlog = req.body;
-
-    // Mendapatkan ID terakhir dari array blogs untuk menentukan ID baru
-    const lastBlog = jsonData.blogs[jsonData.blogs.length - 1];
-    const newId = lastBlog ? lastBlog.id + 1 : 1;
-
-    // Menambahkan ID ke blog baru
-    newBlog.id = newId;
-
-    // Menambahkan blog baru ke dalam array blogs
-    jsonData.blogs.push(newBlog);
-
-    // Menulis kembali data JSON ke file
-    await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
-
-    // Mengirimkan respons dengan data blog baru yang ditambahkan
-    res.status(201).json(newBlog);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
