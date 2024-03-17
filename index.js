@@ -10,6 +10,11 @@ app.use(express.json());
 
 const filePath = "./data/db.json";
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+
 // Endpoint untuk mendapatkan semua data blog
 app.get("/blogs", async (req, res) => {
   try {
