@@ -44,7 +44,7 @@ app.put("/blogs/:id", async (req, res) => {
 });
 
 // Implementasi endpoint DELETE sudah ada dalam kode sebelumnya, namun saya tambahkan di sini untuk referensi lengkap.
-app.delete("/blogs/:id", async (req, res) => {
+app.delete("/blogs/delete/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const data = await fs.readFile(filePath);
@@ -53,6 +53,7 @@ app.delete("/blogs/:id", async (req, res) => {
     if (index !== -1) {
       jsonData.blogs.splice(index, 1); // Menghapus blog dari array
       await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
+      res.send("uhuy");
       res.status(204).end(); // No Content
     } else {
       res.status(404).json({ error: "Blog not found" });
