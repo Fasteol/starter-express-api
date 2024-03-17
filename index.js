@@ -10,7 +10,7 @@ const filePath = "./data/db.json";
 
 // Endpoint untuk mendapatkan semua data blog
 app.get("/blogs", async (req, res) => {
-  const data = getDBData();
+  const data = filePath;
   if (data) {
     res.json(data);
   } else {
