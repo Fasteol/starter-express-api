@@ -30,10 +30,10 @@ app.put("/blogs/:id", async (req, res) => {
     let jsonData = JSON.parse(data);
     const index = jsonData.blogs.findIndex((blog) => blog.id === id);
     if (index !== -1) {
-      const updatedBlog = req.body; // Ambil data blog yang telah diupdate dari body permintaan PUT
-      jsonData.blogs[index] = { ...jsonData.blogs[index], ...updatedBlog }; // Update blog dengan data yang baru
+      const updatedBlog = req.body;
+      jsonData.blogs[index] = { ...jsonData.blogs[index], ...updatedBlog };
       await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
-      res.json(jsonData.blogs[index]); // Kirim respons dengan blog yang telah diupdate
+      res.json(jsonData.blogs[index]);
     } else {
       res.status(404).json({ error: "Blog not found" });
     }
@@ -43,17 +43,16 @@ app.put("/blogs/:id", async (req, res) => {
   }
 });
 
-// Implementasi endpoint DELETE sudah ada dalam kode sebelumnya, namun saya tambahkan di sini untuk referensi lengkap.
-app.delete("/blogs/delete/:id", async (req, res) => {
+// Endpoint untuk menghapus blog berdasarkan id
+app.delete("/blogs/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const data = await fs.readFile(filePath);
     let jsonData = JSON.parse(data);
     const index = jsonData.blogs.findIndex((blog) => blog.id === id);
     if (index !== -1) {
-      jsonData.blogs.splice(index, 1); // Menghapus blog dari array
+      jsonData.blogs.splice(index, 1);
       await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
-      res.send("uhuy");
       res.status(204).end(); // No Content
     } else {
       res.status(404).json({ error: "Blog not found" });
