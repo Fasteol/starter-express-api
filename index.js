@@ -5,7 +5,11 @@ const fs = require("fs/promises");
 const app = express();
 const port = 8000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 app.use(express.json());
 
 const filePath = "./data/db.json";
