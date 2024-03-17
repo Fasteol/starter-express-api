@@ -73,6 +73,34 @@ app.put("/blogs/:id", async (req, res) => {
   }
 });
 
+app.post("/blogs", async (req, res) => {
+  try {
+    const data = await fs.readFile(filePath);
+    let jsonData = JSON.parse(data);
+
+    // Mendapatkan data blog baru dari body request
+    const newBlog = req.body;
+
+    // Menambahkan ID unik untuk blog baru
+    const newId = generateUniqueId(); // Anda perlu membuat fungsi generateUniqueId sesuai kebutuhan
+
+    // Menambahkan ID ke blog baru
+    newBlog.id = newId;
+
+    // Menambahkan blog baru ke dalam array blogs
+    jsonData.blogs.push(newBlog);
+
+    // Menulis kembali data JSON ke file
+    await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
+
+    // Mengirimkan respons dengan data blog baru yang ditambahkan
+    res.status(201).json(newBlog);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Endpoint untuk menghapus blog berdasarkan id
 app.delete("/blogs/:id", async (req, res) => {
   const id = req.params.id;
