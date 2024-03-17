@@ -10,10 +10,12 @@ const filePath = "./data/db.json";
 
 // Endpoint untuk mendapatkan semua data blog
 app.get("/blogs", async (req, res) => {
-  const data = filePath;
-  if (data) {
-    res.json(data);
-  } else {
+  try {
+    const data = await fs.readFile(filePath);
+    const jsonData = JSON.parse(data);
+    res.json(jsonData.blogs);
+  } catch (error) {
+    console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
