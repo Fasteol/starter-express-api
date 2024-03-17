@@ -1,9 +1,11 @@
 const express = require("express");
+const cors = require("cors");
 const fs = require("fs/promises");
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
 
 const filePath = "./data/db.json";
