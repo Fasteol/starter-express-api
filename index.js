@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs/promises");
+const port = 8000;
 
 const app = express();
-const port = 8000;
 
 app.use(
   cors({
