@@ -1,15 +1,9 @@
 const express = require("express");
-const cors = require("cors");
 const fs = require("fs/promises");
 const port = 8000;
 
 const app = express();
 
-app.use(
-  cors({
-    methods: ["GET", "DELETE", "POST", "PUT"],
-  })
-);
 app.use(express.json());
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -67,34 +61,6 @@ app.put("/blogs/:id", async (req, res) => {
     } else {
       res.status(404).json({ error: "Blog not found" });
     }
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-app.post("/blogs", async (req, res) => {
-  try {
-    const data = await fs.readFile(filePath);
-    let jsonData = JSON.parse(data);
-
-    // Mendapatkan data blog baru dari body request
-    const newBlog = req.body;
-
-    // Menambahkan ID unik untuk blog baru
-    const newId = generateUniqueId(); // Anda perlu membuat fungsi generateUniqueId sesuai kebutuhan
-
-    // Menambahkan ID ke blog baru
-    newBlog.id = newId;
-
-    // Menambahkan blog baru ke dalam array blogs
-    jsonData.blogs.push(newBlog);
-
-    // Menulis kembali data JSON ke file
-    await fs.writeFile(filePath, JSON.stringify(jsonData, null, 2));
-
-    // Mengirimkan respons dengan data blog baru yang ditambahkan
-    res.status(201).json(newBlog);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
