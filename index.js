@@ -22,6 +22,24 @@ app.get("/blogs", async (req, res) => {
   }
 });
 
+// Endpoint untuk mendapatkan detail blog berdasarkan ID
+app.get("/blogs/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const data = await fs.readFile(filePath);
+    const jsonData = JSON.parse(data);
+    const blog = jsonData.blogs.find((blog) => blog.id === id);
+    if (blog) {
+      res.json(blog);
+    } else {
+      res.status(404).json({ error: "Blog not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 // Endpoint untuk mengupdate blog berdasarkan id
 app.put("/blogs/:id", async (req, res) => {
   const id = req.params.id;
