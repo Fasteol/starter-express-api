@@ -74,7 +74,7 @@ app.put("/blogs/:id", async (req, res) => {
 });
 
 // Endpoint untuk menghapus blog berdasarkan id
-app.delete("/blogs/delete/:id", async (req, res) => {
+app.delete("/blogs/:id", async (req, res) => {
   const id = req.params.id;
   try {
     const data = await fs.readFile(filePath);
