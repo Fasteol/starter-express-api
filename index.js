@@ -1,9 +1,25 @@
 const express = require("express");
 const cors = require("cors");
 const fs = require("fs/promises");
+const fsi = require("fs");
 const port = 8000;
 
 const app = express();
+
+fsi.readFile(filePath, (err, data) => {
+  if (err) {
+    console.error("Error reading file:", err);
+    return;
+  }
+
+  try {
+    const jsonData = JSON.parse(data);
+    console.log("Data from db.json:", jsonData);
+    // Lakukan sesuatu dengan data yang sudah dibaca
+  } catch (error) {
+    console.error("Error parsing JSON:", error);
+  }
+});
 
 app.use(
   cors({
