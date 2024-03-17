@@ -7,7 +7,6 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
     methods: ["GET", "DELETE", "POST", "PUT"],
   })
 );
@@ -16,8 +15,9 @@ app.use(express.json());
 const filePath = "./data/db.json";
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Ganti dengan domain frontend Anda
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
   next();
 });
 
